@@ -5,6 +5,7 @@ a server using splitpt.
 package splitpt_client
 
 import (
+	"anticensorshiptrafficsplitting/splitpt/common/split"
 	tt "anticensorshiptrafficsplitting/splitpt/common/turbotunnel"
 	"bufio"
 	"context"
@@ -53,7 +54,10 @@ func (t *Transport) Dial() (*smux.Stream, error) {
 
 	log.Printf("Starting new session")
 
-	ptclient, err := ConnectToPT()
+	// For now we'll just make two connections to the same bridge to demonstrate
+	// how the traffic splitting code works. Eventually these connections will be
+	// spawned depending on the configuration.
+	ptclient1, err := ConnectToPT()
 	if err != nil {
 		log.Printf("Error connecting to pt: %s", err.Error())
 		return nil, err
@@ -63,16 +67,27 @@ func (t *Transport) Dial() (*smux.Stream, error) {
 		log.Printf("Error resolving tcp addr: %s", err.Error())
 		return nil, err
 	}
-	ptconn, err := ptclient.DialWithLocalAddr("tcp", "", "localhost:9090", tcpaddr)
+	ptconn1, err := ptclient1.DialWithLocalAddr("tcp", "", "localhost:9090", tcpaddr)
 	if err != nil {
 		log.Printf("Error dialing: %s", err.Error())
 		return nil, err
 	}
 
+	ptclient2, err := ConnectToPT()
+	if err != nil {
+		log.Printf("Error connecting to pt: %s", err.Error())
+		return nil, err
+	}
+	ptconn2, err := ptclient2.DialWithLocalAddr("tcp", "", "localhost:9090", tcpaddr)
+	if err != nil {
+		log.Printf("Error dialing: %s", err.Error())
+		return nil, err
+	}
 	log.Printf("Setting up turbotunnel")
+
 	// TurboTunnel
 	sessionID := tt.NewSessionID()
-	pconn := tt.NewRedialPacketConn(sessionID, ptconn)
+	pconn := split.NewRoundRobinPacketConn(sessionID, []net.Conn{ptconn1, ptconn2}, tcpaddr)
 	conn, err := kcp.NewConn2(pconn.RemoteAddr(), nil, 0, 0, pconn)
 	if err != nil {
 		return nil, err
