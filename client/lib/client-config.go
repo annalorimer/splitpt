@@ -9,8 +9,8 @@ import (
 
 type SplitPTConfig struct {
 	SplittingAlg string
-	LyrebirdPath string
 	Connections  map[string][]struct {
+		BinPath   string
 		Transport string
 		Args      []string
 		Cert      string
@@ -25,11 +25,6 @@ func GetClientTOMLConfig(tomlFilename string) (*SplitPTConfig, error) {
 	if err != nil {
 		log.Printf("Error decoding TOML config")
 		return nil, err
-	}
-
-	log.Printf(config.LyrebirdPath)
-	if config.LyrebirdPath == "" {
-		return nil, errors.New("Error processing TOML: No path to lyrebird binary specified")
 	}
 
 	switch config.SplittingAlg {
