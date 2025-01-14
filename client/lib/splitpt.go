@@ -107,11 +107,9 @@ func (t *SplitPTClient) GetPTConnections() ([]net.Conn, error) {
 			log.Printf("Error resolving TCP address: %s", err.Error())
 			return nil, err
 		}
-		if conn.Transport == "lyrebird" {
-			// TODO need interface for this i guess?
-			log.Printf("Launching Lyrebird connection")
-			//	client, err = LyrebirdConAnect(&conn.Args, conn.Cert)
-			client, err = LyrebirdConnect(t.LyrebirdPath, conn.Args, conn.Cert)
+		if conn.Transport == "obfs4" || conn.Transport == "webtunnel" {
+			log.Printf("Launching Lyrebird connection for %s", conn.Transport)
+			client, err = LyrebirdConnect(conn.BinPath, conn.Transport, conn.Args, conn.Cert)
 			if err != nil {
 				log.Printf("Error connecting to lyrebird: %s", err.Error())
 				return nil, err
