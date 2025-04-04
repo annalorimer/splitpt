@@ -13,5 +13,7 @@ with open('torrc','r') as fin:
     data = fin.read().replace('SOCKS5LISTENPORT', getport())
 with open('torrc','w') as fout:
     fout.write(data)
-with open('splitpt-client.toml', 'w') as spttoml:
+with open('splitpt-client.toml', 'r') as spttoml:
     data1=spttoml.read().replace('OBFS4CERT1', getcert('../splitpt-obfs4bridge1/obfs4_bridgeline.txt')).replace('OBFS4CERT2', getcert('../splitpt-obfs4bridge2/obfs4_bridgeline.txt'))
+with open('splitpt-client.toml', 'w') as spttomlout:
+    spttomlout.write(data1)
