@@ -1,0 +1,6 @@
+# Bridge: bridge1 128.235.169.132:443
+ClientTransportPlugin splitpt socks5 127.0.0.1:SOCKS5LISTENPORT
+UseEntryGuards 1
+UseBridges 1
+Bridge obfs4 128.235.169.132:443
+MaxCircuitDirtiness 10 seconds
