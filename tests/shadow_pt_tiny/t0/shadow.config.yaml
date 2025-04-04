@@ -64,7 +64,7 @@ hosts:
       expected_final_state: running
       path: /opt/bin/oniontrace
       start_time: 61
-    - args: -log splitpt.log -toml splitpt-config.toml
+    - args: -log splitpt.log
       environment:
         TOR_PT_MANAGED_TRANSPORT_VER: '1'
         TOR_PT_ORPORT: 127.0.0.1:9001
@@ -72,7 +72,39 @@ hosts:
         TOR_PT_SERVER_TRANSPORTS: splitpt
         TOR_PT_STATE_LOCATION: ./
       expected_final_state: running
-      path: /opt/bin/splitpt-client
+      path: /opt/bin/splitpt-server
+      start_time: 5
+  splitpt-obfs4bridge1:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    ip_addr: 128.235.169.133
+    network_node_id: 562
+    processes:
+    - args: -log splitpt.log -enableLogging -logLevel DEBUG
+      environment:
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_ORPORT: 128.235.169.132:443
+        TOR_PT_SERVER_BINDADDR: splitpt-128.235.169.133:443
+        TOR_PT_SERVER_TRANSPORTS: obfs4
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/lyrebird
+      start_time: 5
+  splitpt-obfs4bridge2:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    ip_addr: 128.235.169.134
+    network_node_id: 562
+    processes:
+    - args: -log splitpt.log -enableLogging -logLevel DEBUG
+      environment:
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_ORPORT: 128.235.169.132:443
+        TOR_PT_SERVER_BINDADDR: splitpt-128.235.169.134:443
+        TOR_PT_SERVER_TRANSPORTS: obfs4
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/lyrebird
       start_time: 5
   markovclient100exit:
     bandwidth_down: 1000000 kilobit
