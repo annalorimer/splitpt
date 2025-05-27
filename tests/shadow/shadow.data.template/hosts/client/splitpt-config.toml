@@ -1,5 +1,7 @@
 splittingalg = "round-robin"
 
+lyrebirdpath = "/usr/local/bin/lyrebird"
+
 [[connections.connections]]
 
 transport = "lyrebird"
