@@ -261,9 +261,9 @@ ENV PATH=/opt/bin:$PATH
 ENV LD_LIBRARY_PATH=/opt/lib
 # source for testing
 # COPY --from=build-shadow /root/src/shadow /opt/src/shadow
-COPY ../../client/client /opt/bin/splitpt-client
-COPY ../../server/server /opt/bin/splitpt-server
-
+COPY binaries/client /opt/bin/splitpt-client
+COPY binaries/server /opt/bin/splitpt-server
+#COPY binaries/splitpt-config.toml splitpt-config.toml
 # Default command runs the simulation
 #CMD tornettools simulate -s /opt/bin/shadow tornet
-CMD bash run.sh
+#CMD bash run.sh
