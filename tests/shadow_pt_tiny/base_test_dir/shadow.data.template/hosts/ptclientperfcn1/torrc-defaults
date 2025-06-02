@@ -1,0 +1,3 @@
+# The following files specify default tor config options for this host.
+%include ../../../conf/tor.common.torrc
+%include ../../../conf/tor.client.torrc

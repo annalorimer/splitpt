@@ -1,0 +1,12 @@
+splittingalg = "round-robin"
+lyrebirdpath = "/opt/bin/lyrebird"
+[[connections.connections]]
+transport = "lyrebird"
+args = ["OBFS4CERT1", "iat-mode=0"]
+cert = "xxx"
+bridge = "128.235.169.133:443"
+[[connections.connections]]
+transport = "lyrebird"
+args = ["OBFS4CERT2", "iat-mode=0"]
+cert = "xxx"
+bridge = "128.235.169.134:443"

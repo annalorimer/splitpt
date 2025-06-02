@@ -1,0 +1,5765 @@
+general:
+  bootstrap_end_time: 300
+  progress: true
+  stop_time: 3600
+  template_directory: shadow.data.template
+hosts:
+  4uthority1:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    ip_addr: 100.0.0.1
+    network_node_id: 49
+    processes:
+    - args: --Address 4uthority1 --Nickname 4uthority1 --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 1
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 2
+  4uthority2:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    ip_addr: 100.0.0.2
+    network_node_id: 1151
+    processes:
+    - args: --Address 4uthority2 --Nickname 4uthority2 --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 1
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 2
+  4uthority3:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    ip_addr: 100.0.0.3
+    network_node_id: 49
+    processes:
+    - args: --Address 4uthority3 --Nickname 4uthority3 --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 1
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 2
+  bridge1:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    ip_addr: 128.235.169.132
+    network_node_id: 562
+    processes:
+    - args: --Address bridge1 --Nickname bridge1 --defaults-torrc torrc-defaults -f
+        torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 60
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,GWF
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 61
+    - args: -log splitpt.log
+      environment:
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_ORPORT: 127.0.0.1:9001
+        TOR_PT_SERVER_BINDADDR: splitpt-128.235.169.132:443
+        TOR_PT_SERVER_TRANSPORTS: splitpt
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-server
+      start_time: 5
+  splitpt-obfs4bridge1:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    ip_addr: 128.235.169.133
+    network_node_id: 562
+    processes:
+    - args: -enableLogging -logLevel DEBUG
+      environment:
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_ORPORT: 128.235.169.132:443
+        TOR_PT_SERVER_BINDADDR: obfs4-128.235.169.133:443
+        TOR_PT_SERVER_TRANSPORTS: obfs4
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/lyrebird
+      start_time: 5
+  splitpt-obfs4bridge2:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    ip_addr: 128.235.169.134
+    network_node_id: 562
+    processes:
+    - args: -enableLogging -logLevel DEBUG
+      environment:
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_ORPORT: 128.235.169.132:443
+        TOR_PT_SERVER_BINDADDR: obfs4-128.235.169.134:443
+        TOR_PT_SERVER_TRANSPORTS: obfs4
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/lyrebird
+      start_time: 5
+  markovclient100exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 432
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient10exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1622
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient11exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1643
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient12exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1345
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient13exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 802
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient14exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2401
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient15exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1958
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient16exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1908
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient17exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 444
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient18exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1879
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient19exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1687
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient1exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 98
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient20exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1155
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient21exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 558
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient22exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 490
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient23exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1838
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient24exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2496
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient25exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1946
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient26exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1460
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient27exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1357
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient28exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1051
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient29exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 652
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient2exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1852
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient30exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 782
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient31exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1458
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient32exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2207
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient33exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 295
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient34exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2078
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient35exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2303
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient36exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1494
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient37exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1902
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient38exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2079
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient39exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1189
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient3exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1974
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient40exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 454
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient41exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2169
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient42exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 860
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient43exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1465
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient44exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1922
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient45exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1595
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient46exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 269
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient47exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 147
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient48exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1034
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient49exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2267
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient4exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1886
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient50exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1454
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient51exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 604
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient52exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1449
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient53exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1270
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient54exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1116
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient55exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1245
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient56exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 704
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient57exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2234
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient58exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1364
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient59exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1656
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient5exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 700
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient60exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 866
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient61exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1933
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient62exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1716
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient63exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1636
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient64exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 966
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient65exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2280
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient66exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 403
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient67exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2344
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient68exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1659
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient69exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 551
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient6exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 893
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient70exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 408
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient71exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 93
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient72exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2183
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient73exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 159
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient74exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 403
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient75exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2280
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient76exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 861
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient77exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 176
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient78exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 862
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient79exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2143
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient7exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1112
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient80exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1491
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient81exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1601
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient82exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2493
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient83exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1140
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient84exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1817
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient85exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2334
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient86exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 65
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient87exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2431
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient88exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1471
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient89exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 558
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient8exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 670
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient90exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1247
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient91exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 364
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient92exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 324
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient93exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1450
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient94exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1317
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient95exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 33
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient96exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1847
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient97exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1991
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient98exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 837
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient99exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1677
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  markovclient9exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1583
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient100exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient10exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 127
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient11exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1671
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient12exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient13exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2305
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient14exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 362
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient15exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1280
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient16exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient17exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 730
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient18exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient19exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 406
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient1exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient20exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1405
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient21exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient22exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1751
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient23exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 99
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient24exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1595
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient25exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2518
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient26exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 863
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient27exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient28exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1458
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient29exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1131
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient2exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 815
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient30exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient31exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1627
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient32exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 23
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient33exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 768
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient34exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 63
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient35exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient36exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 440
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient37exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1386
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient38exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 362
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient39exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 417
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient3exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 416
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient40exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 440
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient41exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient42exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient43exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient44exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient45exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 665
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient46exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1321
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient47exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1942
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient48exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient49exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient4exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient50exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1830
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient51exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2155
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient52exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient53exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1540
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient54exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient55exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1916
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient56exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1816
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient57exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1685
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient58exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 917
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient59exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 188
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient5exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient60exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 876
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient61exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1289
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient62exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient63exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 348
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient64exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2244
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient65exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1946
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient66exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 667
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient67exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient68exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient69exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 776
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient6exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1751
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient70exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 712
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient71exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient72exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1247
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient73exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1544
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient74exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient75exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 541
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient76exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient77exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient78exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1422
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient79exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2320
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient7exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 853
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient80exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1240
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient81exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1916
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient82exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 908
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient83exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1143
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient84exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient85exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2352
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient86exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 47
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient87exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient88exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 325
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient89exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2516
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient8exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient90exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 49
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient91exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 178
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient92exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2463
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient93exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient94exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1608
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient95exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1231
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient96exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2199
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient97exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1598
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient98exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 2359
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient99exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 698
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  perfclient9exit:
+    bandwidth_down: 1000000 kilobit
+    bandwidth_up: 1000000 kilobit
+    network_node_id: 1932
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      environment:
+        OPENBLAS_NUM_THREADS: '1'
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 240
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 241
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  ptclientperfcn1:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2423
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  ptclientperfcn10:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 1568
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn2:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2423
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn3:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 304
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn4:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 1094
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn5:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2139
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn6:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 1568
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn7:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2139
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn8:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 1094
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfcn9:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2115
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn1:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2207
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn10:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2496
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn2:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2334
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn3:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 908
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn4:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2496
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn5:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 862
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn6:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2305
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn7:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 362
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn8:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 1886
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  ptclientperfnoncn9:
+    bandwidth_down: 100 megabit
+    bandwidth_up: 100 megabit
+    network_node_id: 2183
+    processes:
+    - args: --defaults-torrc torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 250
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 251
+    - args: ../../../conf/tgen-perf-exit.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+    - args: -log splitpt.log -toml splitpt-client.toml
+      environment:
+        TOR_PT_CLIENT_TRANSPORTS: splitpt
+        TOR_PT_MANAGED_TRANSPORT_VER: '1'
+        TOR_PT_STATE_LOCATION: ./
+      expected_final_state: running
+      path: /opt/bin/splitpt-client
+      start_time: 201
+    - args: -m pt_fixup_certs
+      path: /opt/bin/python3
+      start_time: 200
+    - args: -m pt_fixup_socks
+      path: /opt/bin/python3
+      start_time: 202
+  relay10exitguard:
+    bandwidth_down: 122768 kilobit
+    bandwidth_up: 122768 kilobit
+    ip_addr: 193.26.115.61
+    network_node_id: 198
+    processes:
+    - args: --Address relay10exitguard --Nickname relay10exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay11exitguard:
+    bandwidth_down: 52536 kilobit
+    bandwidth_up: 52536 kilobit
+    ip_addr: 185.82.127.128
+    network_node_id: 1808
+    processes:
+    - args: --Address relay11exitguard --Nickname relay11exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay12exitguard:
+    bandwidth_down: 63432 kilobit
+    bandwidth_up: 63432 kilobit
+    ip_addr: 2.57.122.58
+    network_node_id: 1150
+    processes:
+    - args: --Address relay12exitguard --Nickname relay12exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay13exitguard:
+    bandwidth_down: 52136 kilobit
+    bandwidth_up: 52136 kilobit
+    ip_addr: 108.181.27.205
+    network_node_id: 985
+    processes:
+    - args: --Address relay13exitguard --Nickname relay13exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay14exit:
+    bandwidth_down: 149472 kilobit
+    bandwidth_up: 149472 kilobit
+    ip_addr: 5.79.66.19
+    network_node_id: 1757
+    processes:
+    - args: --Address relay14exit --Nickname relay14exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay15exit:
+    bandwidth_down: 138848 kilobit
+    bandwidth_up: 138848 kilobit
+    ip_addr: 192.42.116.202
+    network_node_id: 1854
+    processes:
+    - args: --Address relay15exit --Nickname relay15exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay16exit:
+    bandwidth_down: 277656 kilobit
+    bandwidth_up: 277656 kilobit
+    ip_addr: 45.15.157.177
+    network_node_id: 2256
+    processes:
+    - args: --Address relay16exit --Nickname relay16exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay17exit:
+    bandwidth_down: 162888 kilobit
+    bandwidth_up: 162888 kilobit
+    ip_addr: 192.42.116.209
+    network_node_id: 1854
+    processes:
+    - args: --Address relay17exit --Nickname relay17exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay18exit:
+    bandwidth_down: 173720 kilobit
+    bandwidth_up: 173720 kilobit
+    ip_addr: 185.220.101.139
+    network_node_id: 1345
+    processes:
+    - args: --Address relay18exit --Nickname relay18exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay19exit:
+    bandwidth_down: 122256 kilobit
+    bandwidth_up: 122256 kilobit
+    ip_addr: 192.42.116.173
+    network_node_id: 1854
+    processes:
+    - args: --Address relay19exit --Nickname relay19exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay1exitguard:
+    bandwidth_down: 413256 kilobit
+    bandwidth_up: 413256 kilobit
+    ip_addr: 23.155.24.6
+    network_node_id: 277
+    processes:
+    - args: --Address relay1exitguard --Nickname relay1exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay20exit:
+    bandwidth_down: 324128 kilobit
+    bandwidth_up: 324128 kilobit
+    ip_addr: 23.129.64.211
+    network_node_id: 277
+    processes:
+    - args: --Address relay20exit --Nickname relay20exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay21exit:
+    bandwidth_down: 99520 kilobit
+    bandwidth_up: 99520 kilobit
+    ip_addr: 185.100.85.22
+    network_node_id: 1150
+    processes:
+    - args: --Address relay21exit --Nickname relay21exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay22exit:
+    bandwidth_down: 37560 kilobit
+    bandwidth_up: 37560 kilobit
+    ip_addr: 185.106.102.102
+    network_node_id: 2313
+    processes:
+    - args: --Address relay22exit --Nickname relay22exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay23exit:
+    bandwidth_down: 15456 kilobit
+    bandwidth_up: 15456 kilobit
+    ip_addr: 93.95.230.165
+    network_node_id: 2347
+    processes:
+    - args: --Address relay23exit --Nickname relay23exit --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 3
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 4
+  relay24guard:
+    bandwidth_down: 472888 kilobit
+    bandwidth_up: 472888 kilobit
+    ip_addr: 178.32.136.221
+    network_node_id: 1599
+    processes:
+    - args: --Address relay24guard --Nickname relay24guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay25guard:
+    bandwidth_down: 445656 kilobit
+    bandwidth_up: 445656 kilobit
+    ip_addr: 144.76.81.198
+    network_node_id: 562
+    processes:
+    - args: --Address relay25guard --Nickname relay25guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay26guard:
+    bandwidth_down: 307472 kilobit
+    bandwidth_up: 307472 kilobit
+    ip_addr: 51.38.110.234
+    network_node_id: 1261
+    processes:
+    - args: --Address relay26guard --Nickname relay26guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay27guard:
+    bandwidth_down: 363400 kilobit
+    bandwidth_up: 363400 kilobit
+    ip_addr: 162.251.117.10
+    network_node_id: 1303
+    processes:
+    - args: --Address relay27guard --Nickname relay27guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay28guard:
+    bandwidth_down: 245968 kilobit
+    bandwidth_up: 245968 kilobit
+    ip_addr: 109.138.16.78
+    network_node_id: 496
+    processes:
+    - args: --Address relay28guard --Nickname relay28guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay29guard:
+    bandwidth_down: 205272 kilobit
+    bandwidth_up: 205272 kilobit
+    ip_addr: 51.15.219.22
+    network_node_id: 215
+    processes:
+    - args: --Address relay29guard --Nickname relay29guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay2exitguard:
+    bandwidth_down: 154816 kilobit
+    bandwidth_up: 154816 kilobit
+    ip_addr: 185.220.101.97
+    network_node_id: 1601
+    processes:
+    - args: --Address relay2exitguard --Nickname relay2exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay30guard:
+    bandwidth_down: 301464 kilobit
+    bandwidth_up: 301464 kilobit
+    ip_addr: 192.160.102.168
+    network_node_id: 720
+    processes:
+    - args: --Address relay30guard --Nickname relay30guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay31guard:
+    bandwidth_down: 311872 kilobit
+    bandwidth_up: 311872 kilobit
+    ip_addr: 207.134.205.114
+    network_node_id: 1219
+    processes:
+    - args: --Address relay31guard --Nickname relay31guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay32guard:
+    bandwidth_down: 255536 kilobit
+    bandwidth_up: 255536 kilobit
+    ip_addr: 146.0.36.87
+    network_node_id: 1869
+    processes:
+    - args: --Address relay32guard --Nickname relay32guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay33guard:
+    bandwidth_down: 179880 kilobit
+    bandwidth_up: 179880 kilobit
+    ip_addr: 45.83.106.225
+    network_node_id: 359
+    processes:
+    - args: --Address relay33guard --Nickname relay33guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay34guard:
+    bandwidth_down: 266016 kilobit
+    bandwidth_up: 266016 kilobit
+    ip_addr: 46.228.199.128
+    network_node_id: 1270
+    processes:
+    - args: --Address relay34guard --Nickname relay34guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay35guard:
+    bandwidth_down: 206440 kilobit
+    bandwidth_up: 206440 kilobit
+    ip_addr: 185.177.229.16
+    network_node_id: 2276
+    processes:
+    - args: --Address relay35guard --Nickname relay35guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay36guard:
+    bandwidth_down: 189304 kilobit
+    bandwidth_up: 189304 kilobit
+    ip_addr: 185.216.68.40
+    network_node_id: 2044
+    processes:
+    - args: --Address relay36guard --Nickname relay36guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay37guard:
+    bandwidth_down: 144952 kilobit
+    bandwidth_up: 144952 kilobit
+    ip_addr: 185.117.82.71
+    network_node_id: 1313
+    processes:
+    - args: --Address relay37guard --Nickname relay37guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay38guard:
+    bandwidth_down: 146384 kilobit
+    bandwidth_up: 146384 kilobit
+    ip_addr: 185.82.127.247
+    network_node_id: 1808
+    processes:
+    - args: --Address relay38guard --Nickname relay38guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay39guard:
+    bandwidth_down: 111432 kilobit
+    bandwidth_up: 111432 kilobit
+    ip_addr: 195.20.255.187
+    network_node_id: 915
+    processes:
+    - args: --Address relay39guard --Nickname relay39guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay3exitguard:
+    bandwidth_down: 156200 kilobit
+    bandwidth_up: 156200 kilobit
+    ip_addr: 185.220.101.74
+    network_node_id: 1601
+    processes:
+    - args: --Address relay3exitguard --Nickname relay3exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay40guard:
+    bandwidth_down: 74368 kilobit
+    bandwidth_up: 74368 kilobit
+    ip_addr: 89.58.49.77
+    network_node_id: 865
+    processes:
+    - args: --Address relay40guard --Nickname relay40guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay41guard:
+    bandwidth_down: 96160 kilobit
+    bandwidth_up: 96160 kilobit
+    ip_addr: 212.73.134.242
+    network_node_id: 22
+    processes:
+    - args: --Address relay41guard --Nickname relay41guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay42guard:
+    bandwidth_down: 73072 kilobit
+    bandwidth_up: 73072 kilobit
+    ip_addr: 178.164.211.56
+    network_node_id: 2331
+    processes:
+    - args: --Address relay42guard --Nickname relay42guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay43guard:
+    bandwidth_down: 144168 kilobit
+    bandwidth_up: 144168 kilobit
+    ip_addr: 195.122.183.170
+    network_node_id: 1478
+    processes:
+    - args: --Address relay43guard --Nickname relay43guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay44guard:
+    bandwidth_down: 41392 kilobit
+    bandwidth_up: 41392 kilobit
+    ip_addr: 103.54.56.114
+    network_node_id: 275
+    processes:
+    - args: --Address relay44guard --Nickname relay44guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay45guard:
+    bandwidth_down: 133688 kilobit
+    bandwidth_up: 133688 kilobit
+    ip_addr: 144.126.132.30
+    network_node_id: 808
+    processes:
+    - args: --Address relay45guard --Nickname relay45guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay46guard:
+    bandwidth_down: 121664 kilobit
+    bandwidth_up: 121664 kilobit
+    ip_addr: 193.105.134.18
+    network_node_id: 2001
+    processes:
+    - args: --Address relay46guard --Nickname relay46guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay47guard:
+    bandwidth_down: 90320 kilobit
+    bandwidth_up: 90320 kilobit
+    ip_addr: 83.136.107.114
+    network_node_id: 164
+    processes:
+    - args: --Address relay47guard --Nickname relay47guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay48guard:
+    bandwidth_down: 106656 kilobit
+    bandwidth_up: 106656 kilobit
+    ip_addr: 194.76.227.150
+    network_node_id: 2059
+    processes:
+    - args: --Address relay48guard --Nickname relay48guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay49guard:
+    bandwidth_down: 29296 kilobit
+    bandwidth_up: 29296 kilobit
+    ip_addr: 95.222.140.85
+    network_node_id: 781
+    processes:
+    - args: --Address relay49guard --Nickname relay49guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay4exitguard:
+    bandwidth_down: 224560 kilobit
+    bandwidth_up: 224560 kilobit
+    ip_addr: 178.175.142.26
+    network_node_id: 2044
+    processes:
+    - args: --Address relay4exitguard --Nickname relay4exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay50guard:
+    bandwidth_down: 44328 kilobit
+    bandwidth_up: 44328 kilobit
+    ip_addr: 104.234.70.137
+    network_node_id: 301
+    processes:
+    - args: --Address relay50guard --Nickname relay50guard --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 4
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 5
+  relay51middle:
+    bandwidth_down: 430520 kilobit
+    bandwidth_up: 430520 kilobit
+    ip_addr: 91.206.228.132
+    network_node_id: 701
+    processes:
+    - args: --Address relay51middle --Nickname relay51middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay52middle:
+    bandwidth_down: 205352 kilobit
+    bandwidth_up: 205352 kilobit
+    ip_addr: 46.165.254.40
+    network_node_id: 635
+    processes:
+    - args: --Address relay52middle --Nickname relay52middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay53middle:
+    bandwidth_down: 113256 kilobit
+    bandwidth_up: 113256 kilobit
+    ip_addr: 91.132.146.135
+    network_node_id: 2431
+    processes:
+    - args: --Address relay53middle --Nickname relay53middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay54middle:
+    bandwidth_down: 135352 kilobit
+    bandwidth_up: 135352 kilobit
+    ip_addr: 167.86.74.109
+    network_node_id: 625
+    processes:
+    - args: --Address relay54middle --Nickname relay54middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay55middle:
+    bandwidth_down: 150624 kilobit
+    bandwidth_up: 150624 kilobit
+    ip_addr: 85.159.228.63
+    network_node_id: 1485
+    processes:
+    - args: --Address relay55middle --Nickname relay55middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay56middle:
+    bandwidth_down: 126968 kilobit
+    bandwidth_up: 126968 kilobit
+    ip_addr: 152.89.170.96
+    network_node_id: 482
+    processes:
+    - args: --Address relay56middle --Nickname relay56middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay57middle:
+    bandwidth_down: 67224 kilobit
+    bandwidth_up: 67224 kilobit
+    ip_addr: 130.61.48.162
+    network_node_id: 1280
+    processes:
+    - args: --Address relay57middle --Nickname relay57middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay58middle:
+    bandwidth_down: 100000 kilobit
+    bandwidth_up: 100000 kilobit
+    ip_addr: 74.208.182.78
+    network_node_id: 224
+    processes:
+    - args: --Address relay58middle --Nickname relay58middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay59middle:
+    bandwidth_down: 41000 kilobit
+    bandwidth_up: 41000 kilobit
+    ip_addr: 78.80.47.85
+    network_node_id: 1973
+    processes:
+    - args: --Address relay59middle --Nickname relay59middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay5exitguard:
+    bandwidth_down: 171296 kilobit
+    bandwidth_up: 171296 kilobit
+    ip_addr: 185.181.61.115
+    network_node_id: 1343
+    processes:
+    - args: --Address relay5exitguard --Nickname relay5exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay60middle:
+    bandwidth_down: 29496 kilobit
+    bandwidth_up: 29496 kilobit
+    ip_addr: 72.49.24.238
+    network_node_id: 201
+    processes:
+    - args: --Address relay60middle --Nickname relay60middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay61middle:
+    bandwidth_down: 32744 kilobit
+    bandwidth_up: 32744 kilobit
+    ip_addr: 37.187.122.101
+    network_node_id: 1196
+    processes:
+    - args: --Address relay61middle --Nickname relay61middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay62middle:
+    bandwidth_down: 31768 kilobit
+    bandwidth_up: 31768 kilobit
+    ip_addr: 192.3.228.140
+    network_node_id: 1818
+    processes:
+    - args: --Address relay62middle --Nickname relay62middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay63middle:
+    bandwidth_down: 40168 kilobit
+    bandwidth_up: 40168 kilobit
+    ip_addr: 109.104.155.20
+    network_node_id: 724
+    processes:
+    - args: --Address relay63middle --Nickname relay63middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay64middle:
+    bandwidth_down: 25392 kilobit
+    bandwidth_up: 25392 kilobit
+    ip_addr: 217.81.92.144
+    network_node_id: 2466
+    processes:
+    - args: --Address relay64middle --Nickname relay64middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay65middle:
+    bandwidth_down: 41592 kilobit
+    bandwidth_up: 41592 kilobit
+    ip_addr: 77.68.20.86
+    network_node_id: 2170
+    processes:
+    - args: --Address relay65middle --Nickname relay65middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay66middle:
+    bandwidth_down: 20184 kilobit
+    bandwidth_up: 20184 kilobit
+    ip_addr: 69.164.211.18
+    network_node_id: 2142
+    processes:
+    - args: --Address relay66middle --Nickname relay66middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay67middle:
+    bandwidth_down: 12096 kilobit
+    bandwidth_up: 12096 kilobit
+    ip_addr: 209.97.130.15
+    network_node_id: 1801
+    processes:
+    - args: --Address relay67middle --Nickname relay67middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay68middle:
+    bandwidth_down: 8360 kilobit
+    bandwidth_up: 8360 kilobit
+    ip_addr: 213.95.190.181
+    network_node_id: 412
+    processes:
+    - args: --Address relay68middle --Nickname relay68middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay69middle:
+    bandwidth_down: 9688 kilobit
+    bandwidth_up: 9688 kilobit
+    ip_addr: 46.44.183.123
+    network_node_id: 730
+    processes:
+    - args: --Address relay69middle --Nickname relay69middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay6exitguard:
+    bandwidth_down: 398392 kilobit
+    bandwidth_up: 398392 kilobit
+    ip_addr: 23.129.64.226
+    network_node_id: 277
+    processes:
+    - args: --Address relay6exitguard --Nickname relay6exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay70middle:
+    bandwidth_down: 30024 kilobit
+    bandwidth_up: 30024 kilobit
+    ip_addr: 49.176.216.12
+    network_node_id: 933
+    processes:
+    - args: --Address relay70middle --Nickname relay70middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay71middle:
+    bandwidth_down: 58576 kilobit
+    bandwidth_up: 58576 kilobit
+    ip_addr: 140.78.100.15
+    network_node_id: 789
+    processes:
+    - args: --Address relay71middle --Nickname relay71middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay72middle:
+    bandwidth_down: 5592 kilobit
+    bandwidth_up: 5592 kilobit
+    ip_addr: 212.144.96.29
+    network_node_id: 573
+    processes:
+    - args: --Address relay72middle --Nickname relay72middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay73middle:
+    bandwidth_down: 2824 kilobit
+    bandwidth_up: 2824 kilobit
+    ip_addr: 37.218.242.84
+    network_node_id: 2024
+    processes:
+    - args: --Address relay73middle --Nickname relay73middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay74middle:
+    bandwidth_down: 15952 kilobit
+    bandwidth_up: 15952 kilobit
+    ip_addr: 202.59.9.238
+    network_node_id: 1056
+    processes:
+    - args: --Address relay74middle --Nickname relay74middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay75middle:
+    bandwidth_down: 3872 kilobit
+    bandwidth_up: 3872 kilobit
+    ip_addr: 185.73.240.205
+    network_node_id: 495
+    processes:
+    - args: --Address relay75middle --Nickname relay75middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay76middle:
+    bandwidth_down: 608 kilobit
+    bandwidth_up: 608 kilobit
+    ip_addr: 132.226.202.222
+    network_node_id: 813
+    processes:
+    - args: --Address relay76middle --Nickname relay76middle --defaults-torrc torrc-defaults
+        -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 5
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 6
+  relay7exitguard:
+    bandwidth_down: 127392 kilobit
+    bandwidth_up: 127392 kilobit
+    ip_addr: 179.43.159.198
+    network_node_id: 1400
+    processes:
+    - args: --Address relay7exitguard --Nickname relay7exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay8exitguard:
+    bandwidth_down: 85352 kilobit
+    bandwidth_up: 85352 kilobit
+    ip_addr: 45.128.232.170
+    network_node_id: 2024
+    processes:
+    - args: --Address relay8exitguard --Nickname relay8exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  relay9exitguard:
+    bandwidth_down: 96920 kilobit
+    bandwidth_up: 96920 kilobit
+    ip_addr: 199.249.230.117
+    network_node_id: 487
+    processes:
+    - args: --Address relay9exitguard --Nickname relay9exitguard --defaults-torrc
+        torrc-defaults -f torrc
+      expected_final_state: running
+      path: /opt/bin/tor
+      start_time: 2
+    - args: Mode=log TorControlPort=9051 LogLevel=info Events=BW,CIRC
+      expected_final_state: running
+      path: /opt/bin/oniontrace
+      start_time: 3
+  server10exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 2403
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server1exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 2176
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server2exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 186
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server3exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 1582
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server4exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 575
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server5exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 468
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server6exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 1302
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server7exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 1955
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server8exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 516
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+  server9exit:
+    bandwidth_down: 100000000 kilobit
+    bandwidth_up: 100000000 kilobit
+    network_node_id: 1860
+    processes:
+    - args: ../../../conf/tgen-server.tgenrc.graphml
+      expected_final_state: running
+      path: /opt/bin/tgen
+      start_time: 300
+network:
+  graph:
+    file:
+      compression: xz
+      path: /mnt/atlas_v201801.shadow_v2.cn_10p_loss.gml.xz
+    type: gml
+  use_shortest_path: false

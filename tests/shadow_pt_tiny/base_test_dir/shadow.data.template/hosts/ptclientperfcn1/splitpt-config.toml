@@ -1,0 +1,19 @@
+splittingalg = "round-robin"
+
+lyrebirdpath = "/usr/local/bin/lyrebird"
+
+[[connections.connections]]
+
+transport = "lyrebird"
+args = ["cert=xmK64YEbi2h1aZC5P5s7MyiUN8gmypIRDnaiRKmB4/qT0lGkaAglYlzKPrkpc4I2PHhVNg", "iat-mode=0"]
+cert = "xxx"
+bridge = "localhost:9090"
+
+[[connections.connections]]
+
+transport = "lyrebird"
+args = ["cert=xmK64YEbi2h1aZC5P5s7MyiUN8gmypIRDnaiRKmB4/qT0lGkaAglYlzKPrkpc4I2PHhVNg", "iat-mode=0"]
+cert = "xxx"
+bridge = "localhost:9090"
+
+
