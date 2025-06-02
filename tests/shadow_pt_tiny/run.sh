@@ -4,7 +4,7 @@
 
 #set -euo pipefail
 
-simdir=trial3
+simdir=$1
 
 #tar -xaf tornet__net-0.01__load-3.2__trial-1__pt-obfs4.tar.xz
 
@@ -12,7 +12,7 @@ SEED=`python3 -c 'import random; print(random.randint(0, 999999999))'`
 
 tornettools simulate \
     --shadow /opt/bin/shadow \
-    --args "--parallelism=32 --seed=${SEED} --template-directory=shadow.data.template" \
+    --args "--parallelism=32 --seed=${SEED} --template-directory=shadow.data.template --model-unblocked-syscall-latency=true --strace-logging-mode=standard" \
     --filename shadow.config.yaml \
     ${simdir}
 
