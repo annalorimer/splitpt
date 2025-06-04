@@ -1,0 +1,13 @@
+# obfs4 torrc client bridge line
+#
+# This file is an automatically generated bridge line based on
+# the current lyrebird configuration.  EDITING IT WILL HAVE NO
+# EFFECT.
+#
+# Before distributing this Bridge, edit the placeholder fields
+# to contain the actual values:
+#  <IP ADDRESS>  - The public IP address of your obfs4 bridge.
+#  <PORT>        - The TCP/IP port of your obfs4 bridge.
+#  <FINGERPRINT> - The bridge's fingerprint.
+
+Bridge obfs4 <IP ADDRESS>:<PORT> <FINGERPRINT> cert=Bday9/hvaL2JZugv0zL+zJJYzMvWs1+HWlfFqfZl+w2JRXuZQ9yOR0X2591MlbThbglzJw iat-mode=0

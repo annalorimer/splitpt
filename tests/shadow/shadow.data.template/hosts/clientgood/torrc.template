@@ -1,0 +1,9 @@
+ORPort 0
+DirPort 0
+ClientOnly 1
+SocksPort 127.0.0.1:9000
+
+ClientTransportPlugin obfs4 socks5 127.0.0.1:${SOCKS5LISTENPORT}
+UseEntryGuards 1
+UseBridges 1
+Bridge obfs4 100.0.0.1:444 A52CA5B56C64D864F6AE43E56F29ACBD5706DDA1 cert=Bday9/hvaL2JZugv0zL+zJJYzMvWs1+HWlfFqfZl+w2JRXuZQ9yOR0X2591MlbThbglzJw iat-mode=0
