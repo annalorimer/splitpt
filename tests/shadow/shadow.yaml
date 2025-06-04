@@ -1,5 +1,6 @@
 general:
-  stop_time: 30 min
+  stop_time: 60 min
+  bootstrap_end_time: 5 min
 network:
   graph:
     type: gml
@@ -116,7 +117,6 @@ hosts:
       environment:
         TOR_PT_MANAGED_TRANSPORT_VER: "1"
         TOR_PT_CLIENT_TRANSPORTS: "splitpt"
-        PATH: ~/.local/bin
       start_time: 1
       expected_final_state: running
     # The following snippet was developed by the proteus authors and used with their permission
@@ -144,6 +144,6 @@ hosts:
     - path: tgen
       environment: { OPENBLAS_NUM_THREADS: "1" }
       args: tgen-client.graphml.xml
-      start_time: 150
+      # We need to give Tor enough time to bootstrap to 100%
+      start_time: 300
       expected_final_state: {exited: 0}
-  
