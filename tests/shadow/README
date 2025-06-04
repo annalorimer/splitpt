@@ -1,5 +1,35 @@
-Run with:
+# Readme
+
+## IMPORTANT - read before running Shadow!
+
+- Your lyrebird binary needs to be located in `/usr/local/bin/lyrebird`, or else
+  you need to specify the correct path in the following files before running Shadow.
+  - `shadow.data.template/hosts/clientgoodsplit/splitpt-config.toml`
+  - `shadow.data.template/hosts/clientbadsplit/splitpt-config.toml`
+
+- Make sure `splitpt-client` and `splitpt-server` are in your default path.
+
+## Run Shadow
 
 ```
-shadow --model-unblocked-syscall-latency=true shadow.yaml --template-directory=shadow.data.template > shadow.log
+shadow \
+    --model-unblocked-syscall-latency=true \
+    --template-directory=shadow.data.template \
+    shadow.yaml \
+    > shadow.log
 ```
+
+## Did it work?
+
+The client's downloads should result in `stream-success` messages:
+
+    cat shadow.data/hosts/client*/tgen.*.stdout | grep stream-success
+
+There are problems if you see any `stream-error` messages:
+
+    cat shadow.data/hosts/client*/tgen.*.stdout | grep stream-error
+    cat shadow.data/hosts/serer/tgen.1000.stdout | grep stream-error
+
+The `perf.sh` script gives you a summary:
+
+    bash perf.sh
